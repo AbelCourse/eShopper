@@ -1,0 +1,9 @@
+eShopper - an online shopping/vending system for an online merchant to serve buyers and sellers (think, alibaba or amazon)
+
+
+- User can create accounts, log in and modify accounts
+- Admin can add, edit, and delete products
+- Search is available for users to find products easily
+- User can add items to their carts
+- Users can leave reviews and rate products
+- Checkout asks for payment details, shipping address, and order confirmation
