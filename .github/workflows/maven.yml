@@ -21,7 +21,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:13
+        image: postgres
         env:
           POSTGRES_DB: eShopper
           POSTGRES_USER: postgres
