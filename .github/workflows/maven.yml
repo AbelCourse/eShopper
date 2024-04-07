@@ -25,6 +25,7 @@ jobs:
     - name: Start PostgreSQL
       run: |
         sudo systemctl start postgresql
+        sudo systemctl status postgresql
         sudo -u postgres psql -c "CREATE DATABASE eShopper;"
         sudo -u postgres psql -c "DO $$ BEGIN CREATE USER IF NOT EXISTS postgres WITH PASSWORD 'root1234'; END $$;"
         sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE eShopper TO postgres;"
