@@ -21,6 +21,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
+    - name: Start PostgreSQL
+      run: |
+        sudo systemctl start postgresql
+        sudo -u postgres psql -c "CREATE DATABASE eShopper;"
+        sudo -u postgres psql -c "CREATE USER postgres WITH PASSWORD 'root1234';"
+        sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE eShopper TO postgres;"
+    
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
