@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -14,22 +15,18 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @Entity
-public class Review {
+@Table(name = "buyer")
+public class Buyer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String comment;
-    private int rating;
+    private String username;
+    private String password;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
-
+    @OneToMany(mappedBy = "buyer")
     @ToString.Exclude
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private Buyer buyer;
+    private List<Review> reviewList;
 
     @Override
     public final boolean equals(Object o) {
@@ -38,8 +35,8 @@ public class Review {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Review review = (Review) o;
-        return getId() != null && Objects.equals(getId(), review.getId());
+        Buyer buyer = (Buyer) o;
+        return getId() != null && Objects.equals(getId(), buyer.getId());
     }
 
     @Override
