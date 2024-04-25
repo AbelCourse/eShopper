@@ -1,8 +1,8 @@
 package edu.miu.cs489.eshopper.model;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
@@ -12,15 +12,15 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @Entity
+@Builder
 public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String comment;
-    private int rating;
+    private double rating;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
@@ -29,7 +29,15 @@ public class Review {
     @ToString.Exclude
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private Buyer buyer;
+    private User user;
+
+    public Review(Long id, String comment, double rating, Product product, User user) {
+        this.id = id;
+        this.comment = comment;
+        this.rating = rating;
+        this.product = product;
+        this.user = user;
+    }
 
     @Override
     public final boolean equals(Object o) {
@@ -45,5 +53,8 @@ public class Review {
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
+
+    public Review() {
     }
 }

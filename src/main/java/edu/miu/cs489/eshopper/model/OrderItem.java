@@ -1,32 +1,35 @@
 package edu.miu.cs489.eshopper.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.List;
 import java.util.Objects;
 
+@Entity
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Entity
-@Table(name = "buyer")
-public class Buyer {
+@Table(name = "order_items")
+@AllArgsConstructor
+public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String username;
-    private String password;
+    private Long orderItemId;
 
-    @OneToMany(mappedBy = "buyer")
-    @ToString.Exclude
-    private List<Review> reviewList;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
+
+    private Integer quantity;
+    private double discount;
+    private double orderedProductPrice;
 
     @Override
     public final boolean equals(Object o) {
@@ -35,8 +38,8 @@ public class Buyer {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Buyer buyer = (Buyer) o;
-        return getId() != null && Objects.equals(getId(), buyer.getId());
+        OrderItem orderItem = (OrderItem) o;
+        return getOrderItemId() != null && Objects.equals(getOrderItemId(), orderItem.getOrderItemId());
     }
 
     @Override

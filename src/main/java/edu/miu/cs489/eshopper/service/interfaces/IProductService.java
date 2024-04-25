@@ -1,15 +1,16 @@
 package edu.miu.cs489.eshopper.service.interfaces;
 
 import edu.miu.cs489.eshopper.model.request.ProductRequestDto;
+import edu.miu.cs489.eshopper.model.request.ReviewRequestDTO;
 import edu.miu.cs489.eshopper.model.response.ProductResponseDto;
 
 import java.util.List;
 
 public interface IProductService {
 
-    void addProduct(ProductRequestDto productDto);
+    ProductResponseDto addProduct(ProductRequestDto productDto);
 
-    void updateProduct(ProductRequestDto productDto, Long id);
+    ProductResponseDto updateProduct(ProductRequestDto productDto, Long id);
 
     void deleteProductById(Long id);
 
@@ -21,5 +22,5 @@ public interface IProductService {
 
     List<ProductResponseDto> getProductByRating(double rating);
 
-
+    String addReviewToProduct(Long userID, Long productId, ReviewRequestDTO reviewDTO);
 }

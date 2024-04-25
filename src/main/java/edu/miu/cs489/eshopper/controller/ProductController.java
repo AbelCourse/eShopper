@@ -3,7 +3,6 @@ package edu.miu.cs489.eshopper.controller;
 import edu.miu.cs489.eshopper.model.request.ProductRequestDto;
 import edu.miu.cs489.eshopper.model.response.ProductResponseDto;
 import edu.miu.cs489.eshopper.service.interfaces.IProductService;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +14,9 @@ import java.util.List;
 public class ProductController {
 
     private final IProductService productService;
-    private final ModelMapper modelMapper;
 
-    public ProductController(IProductService productService, ModelMapper modelMapper) {
+    public ProductController(IProductService productService) {
         this.productService = productService;
-        this.modelMapper = modelMapper;
     }
 
     @GetMapping("/list")
@@ -27,22 +24,30 @@ public class ProductController {
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
 
-    //
-    @GetMapping("/{name}")
-    public ResponseEntity<List<ProductResponseDto>> getProductsByName(@PathVariable String name) {
+    @GetMapping
+    public ResponseEntity<List<ProductResponseDto>> getProductsByName(@RequestParam(value = "name") String name) {
         return new ResponseEntity<>(productService.getProductByName(name), HttpStatus.OK);
     }
 
+    @GetMapping("/list/{rating}")
+    public List<ProductResponseDto> getProductByRating(@PathVariable double rating) {
+        return productService.getProductByRating(rating);
+    }
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductResponseDto> getProduct(@PathVariable Long id) {
+        return new ResponseEntity<>(productService.getProduct(id), HttpStatus.OK);
+    }
+
     @PostMapping("/add")
-    public ResponseEntity<Void> addProduct(@RequestBody ProductRequestDto productDto) {
-        productService.addProduct(productDto);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> addProduct(@RequestBody ProductRequestDto productDto) {
+        return new ResponseEntity<>(productService.addProduct(productDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Void> updateProduct(@RequestBody ProductRequestDto productDto, @PathVariable Long id) {
-        productService.updateProduct(productDto, id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<ProductResponseDto> updateProduct(@RequestBody ProductRequestDto productDto, @PathVariable Long id) {
+        return new ResponseEntity<>(productService.updateProduct(productDto, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -51,36 +56,5 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ProductResponseDto> getProduct(@PathVariable Long id) {
-        return new ResponseEntity<>(productService.getProduct(id), HttpStatus.OK);
-    }
-
-
-    @GetMapping("/list/{rating}")
-    public List<ProductResponseDto> getProductByRating(@PathVariable double rating) {
-        return productService.getProductByRating(rating);
-    }
-    //
-    // @GetMapping("/products/{name}")
-    // public void getProductByName(@PathVariable String name) {
-    //     productService.getProductByName(name);
-    // }
-    //
-    // @GetMapping("/products/{rating}")
-    // public List<ProductResponseDto> getProductByRating(@PathVariable double rating) {
-    //     return productService.getProductByRating(rating);
-    // }
-    //
-    // @GetMapping("/products/{name}")
-    // public void getProductByName(@PathVariable String name) {
-    //     productService.getProductByName(name);
-    // }
-    //
-    // @GetMapping("/products/{rating}")
-    // public List<ProductResponseDto> getProductByRating(@PathVariable double rating) {
-    //     return productService.getProductByRating(rating);
-    // }
-    //
 
 }

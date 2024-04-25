@@ -1,14 +1,16 @@
 package edu.miu.cs489.eshopper.repository;
 
 import edu.miu.cs489.eshopper.model.Product;
-import edu.miu.cs489.eshopper.model.response.ProductResponseDto;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    List<Product> findProductsByName(String name);
+    @Query("SELECT p FROM Product p WHERE p.name LIKE %?1%")
+    List<Product> findProductsByNameLike(String name);
 
-    List<ProductResponseDto> findProductsByRating(double rating);
+    @Query("SELECT p FROM Product p WHERE p.rating = ?1")
+    List<Product> findProductsByRating(double rating);
 }

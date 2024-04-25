@@ -19,15 +19,20 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
     private String description;
     private double price;
     private double rating;
     private int quantity;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Review> reviews;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<CartLine> cartLines;
 
 
     @Override
@@ -45,4 +50,12 @@ public class Product {
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
+
+    public double getNumberOfReviews() {
+        if (reviews == null) {
+            return 0;
+        }
+        return reviews.size();
+    }
+    
 }
