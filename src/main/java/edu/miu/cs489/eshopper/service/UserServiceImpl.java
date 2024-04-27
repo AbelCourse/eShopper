@@ -1,8 +1,10 @@
 package edu.miu.cs489.eshopper.service;
 
+import edu.miu.cs489.eshopper.config.Mapper;
 import edu.miu.cs489.eshopper.exception.ResourceNotFoundException;
 import edu.miu.cs489.eshopper.model.User;
 import edu.miu.cs489.eshopper.model.request.UserRegistrationDTO;
+import edu.miu.cs489.eshopper.model.response.UserByIdDTO;
 import edu.miu.cs489.eshopper.repository.UserRepository;
 import edu.miu.cs489.eshopper.service.interfaces.IUserService;
 import org.springframework.stereotype.Service;
@@ -14,9 +16,11 @@ import java.util.HashSet;
 public class UserServiceImpl implements IUserService {
 
     private final UserRepository userRepository;
+    private final Mapper mapper;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, Mapper mapper) {
         this.userRepository = userRepository;
+        this.mapper = mapper;
     }
 
     @Override
@@ -39,8 +43,13 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User getUserById(Long userId) {
-        return userRepository.findById(userId).orElse(null);
+    public UserByIdDTO getUserById(Long userId) {
+        return mapUserToUserByIdDTO(userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User with id " + userId + " not found")));
+    }
+
+    
+    private UserByIdDTO mapUserToUserByIdDTO(User user) {
+        return mapper.map(user, UserByIdDTO.class);
     }
 
     @Override

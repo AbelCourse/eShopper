@@ -1,13 +1,37 @@
 #Spring connection with postgresql local
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/eShopper
-    username: postgres
-    password: root1234
+    # Postgre online db
+    #    url: jdbc:postgresql://eshopper.postgres.database.azure.com:5432/eshopper
+    #    username: fsscvijiry
+    #    password: Root1234
+
+    # Postgre local db
+    #    url: jdbc:postgresql://localhost:5432/eShopper
+    #    username: postgres
+    #    password: root1234
+
+    # MySQL online db
+    url: jdbc:mysql://eshopper.mysql.database.azure.com:3306/eshopper?enabledTLSProtocols=TLSv1.2&useSSL=true&requireSSL=FALSE
+    username: eshopper
+    password: Root1234
+
+    # MySQL local db
+  #    url: jdbc:mysql://localhost:3306/eshopper
+  #    username: root
+  #    password: Root1234
+
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        #        dialect: org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.MySQLDialect
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE

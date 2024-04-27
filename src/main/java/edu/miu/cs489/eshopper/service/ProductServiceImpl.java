@@ -8,6 +8,7 @@ import edu.miu.cs489.eshopper.model.User;
 import edu.miu.cs489.eshopper.model.request.ProductRequestDto;
 import edu.miu.cs489.eshopper.model.request.ReviewRequestDTO;
 import edu.miu.cs489.eshopper.model.response.ProductResponseDto;
+import edu.miu.cs489.eshopper.model.response.ReviewDTO;
 import edu.miu.cs489.eshopper.repository.ProductRepository;
 import edu.miu.cs489.eshopper.repository.UserRepository;
 import edu.miu.cs489.eshopper.service.interfaces.IProductService;
@@ -123,9 +124,20 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public ProductResponseDto getProduct(Long id) {
-        return productRepository.findById(id)
-                .map(product -> mapper.map(product, ProductResponseDto.class))
+        var product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+        var productResponseDto = new ProductResponseDto();
+        productResponseDto.setId(product.getId());
+        productResponseDto.setName(product.getName());
+        productResponseDto.setDescription(product.getDescription());
+        productResponseDto.setPrice(product.getPrice());
+        productResponseDto.setRating(product.getRating());
+        productResponseDto.setQuantity(product.getQuantity());
+        var reviews = product.getReviews();
+        if (reviews != null) {
+            productResponseDto.setReviews(mapper.mapList(reviews, ReviewDTO.class));
+        }
+        return productResponseDto;
     }
 
     @Override

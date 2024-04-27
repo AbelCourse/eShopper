@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,4 +19,5 @@ public class ProductResponseDto {
     private double price;
     private double rating;
     private int quantity;
+    List<ReviewDTO> reviews = new ArrayList<>();
 }

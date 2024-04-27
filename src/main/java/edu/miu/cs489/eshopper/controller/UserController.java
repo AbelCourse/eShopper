@@ -3,6 +3,7 @@ package edu.miu.cs489.eshopper.controller;
 import edu.miu.cs489.eshopper.model.User;
 import edu.miu.cs489.eshopper.model.request.ReviewRequestDTO;
 import edu.miu.cs489.eshopper.model.request.UserRegistrationDTO;
+import edu.miu.cs489.eshopper.model.response.UserByIdDTO;
 import edu.miu.cs489.eshopper.service.interfaces.IProductService;
 import edu.miu.cs489.eshopper.service.interfaces.IUserService;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable Long userId) {
+    public ResponseEntity<UserByIdDTO> getUserById(@PathVariable Long userId) {
         return new ResponseEntity<>(userService.getUserById(userId), HttpStatus.OK);
     }
 
